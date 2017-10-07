@@ -11,7 +11,7 @@ class Header extends Component {
       <Toolbar className="toolbar" fixed>
         <Toolbar.Row>
           <Toolbar.Section>
-            <Tabs scroller>
+            <Tabs>
               <Tabs.Tab
                 onClick={() => this.props.history.push('/stories/top')}
                 active={true}
@@ -21,9 +21,17 @@ class Header extends Component {
               <Tabs.Tab onClick={() => this.props.history.push('/stories/new')}>
                 new
               </Tabs.Tab>
-              <Tabs.Tab>show</Tabs.Tab>
-              <Tabs.Tab>ask</Tabs.Tab>
-              <Tabs.Tab>job</Tabs.Tab>
+              <Tabs.Tab
+                onClick={() => this.props.history.push('/stories/show')}
+              >
+                show
+              </Tabs.Tab>
+              <Tabs.Tab onClick={() => this.props.history.push('/stories/ask')}>
+                ask
+              </Tabs.Tab>
+              <Tabs.Tab onClick={() => this.props.history.push('/stories/job')}>
+                job
+              </Tabs.Tab>
             </Tabs>
           </Toolbar.Section>
         </Toolbar.Row>

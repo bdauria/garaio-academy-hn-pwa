@@ -88,7 +88,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   fetchStories: type =>
-    fetchStories().then(response => {
+    fetchStories(type).then(response => {
       dispatch(loadStories(type, response.data));
     })
 });
