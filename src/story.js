@@ -5,7 +5,7 @@ import { fetchStory } from './hacker-news-api';
 import { loadStory } from './stories-reducer';
 import moment from 'moment';
 import Pluralize from 'pluralize';
-import Spinner from 'react-spinkit';
+import { CircularProgress } from 'material-ui/Progress';
 
 const Post = styled.li`
   border-bottom: 1px solid #ccc;
@@ -60,7 +60,7 @@ class Story extends Component {
 
   content() {
     if (!this.props.story.id) {
-      return <Spinner name="circle" fadeIn="none" color="#3F51B5" />;
+      return <CircularProgress />;
     }
     return (
       <div>

@@ -4,11 +4,13 @@ import { connect } from 'preact-redux';
 import { fetchStories } from './hacker-news-api';
 import { loadStories } from './stories-reducer';
 import Story from './story';
-import Button from 'preact-material-components/Button';
-import 'preact-material-components/Button/style.css';
-import 'preact-material-components/Theme/style.css';
+import { CircularProgress } from 'material-ui/Progress';
+import { LinearProgress } from 'material-ui/Progress';
 
-const Container = styled.div`padding: 8px 0;`;
+const Container = styled.div`
+  height: 100%;
+  padding: 8px 0;
+`;
 
 const storiesPerPage = 30;
 
@@ -21,7 +23,9 @@ const Pagination = styled.div`
   font-size: 17px;
 `;
 
-const NavButton = styled(Button)`margin: 10px;`;
+const StoriesProgress = styled(LinearProgress)`margin: 20px 20px 20px 20px;`;
+
+const NavButton = styled.button`margin: 10px;`;
 
 class Stories extends Component {
   componentDidMount() {
@@ -56,6 +60,7 @@ class Stories extends Component {
   render() {
     return (
       <Container>
+        {this.props.stories.length === 0 && <StoriesProgress />}
         <ol>
           {this.props.stories
             .slice(this.pageSliceStart(), this.pageSliceEnd())
