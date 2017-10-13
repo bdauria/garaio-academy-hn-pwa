@@ -5,12 +5,9 @@ import { Provider } from 'preact-redux';
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import { stories } from './stories-reducer';
 import { BrowserRouter } from 'react-router-dom';
-import logger from 'redux-logger';
-import App from './app';
+import Main from './main';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import { green, red } from 'material-ui/colors';
-
-import 'typeface-roboto';
 
 const rootReducer = combineReducers({
   stories
@@ -25,18 +22,6 @@ const theme = createMuiTheme({
   }
 });
 
-export class Main extends Component {
-  componentDidMount() {
-    const jssStyles = document.getElementById('jss-server-side');
-    if (jssStyles && jssStyles.parentNode) {
-      jssStyles.parentNode.removeChild(jssStyles);
-    }
-  }
-  render() {
-    return <App />;
-  }
-}
-
 render(
   <Provider store={store}>
     <MuiThemeProvider theme={theme}>
@@ -45,5 +30,6 @@ render(
       </BrowserRouter>
     </MuiThemeProvider>
   </Provider>,
-  document.body
+  document.body,
+  document.body.firstElementChild
 );
