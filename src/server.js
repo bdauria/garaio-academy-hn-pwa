@@ -2,7 +2,7 @@ import './patchPreact';
 
 import path from 'path';
 import Express from 'express';
-import App from './app';
+import Main from './main';
 import { h } from 'preact';
 import render from 'preact-render-to-string';
 import { StaticRouter } from 'react-router-dom';
@@ -13,16 +13,20 @@ import preset from 'jss-preset-default';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import createGenerateClassName from 'material-ui/styles/createGenerateClassName';
 import { green, red } from 'material-ui/colors';
-import { ServerStyleSheet } from 'styled-components';
+import { Provider } from 'preact-redux';
+import { createStore, combineReducers } from 'redux';
+import { stories } from './stories-reducer';
+import compression from 'compression';
 
-const app = Express();
-const port = 3000;
+export const app = Express();
+// const port = 3000;
 
-app.use('/dist', Express.static('dist'));
-
+// app.use(compression());
+// app.use('/dist', Express.static('dist'));
 app.use(handleRender);
 
 function handleRender(req, res) {
+  const context = {};
   const materialSheets = new SheetsRegistry();
   const jss = create(preset());
   jss.options.createGenerateClassName = createGenerateClassName;
@@ -35,30 +39,35 @@ function handleRender(req, res) {
     }
   });
 
-  const styledComponentsSheet = new ServerStyleSheet();
+  const rootReducer = combineReducers({
+    stories
+  });
+  const store = createStore(rootReducer);
 
   const html = render(
-    styledComponentsSheet.collectStyles(
-      <JssProvider registry={materialSheets} jss={jss}>
-        <MuiThemeProvider theme={theme} sheetsManager={new Map()}>
-          <StaticRouter context={{}}>
-            <App />
+    <JssProvider registry={materialSheets} jss={jss}>
+      <MuiThemeProvider theme={theme} sheetsManager={new Map()}>
+        <Provider store={store}>
+          <StaticRouter location={req.url} context={context}>
+            <Main />
           </StaticRouter>
-        </MuiThemeProvider>
-      </JssProvider>
-    )
+        </Provider>
+      </MuiThemeProvider>
+    </JssProvider>
   );
 
-  const css = materialSheets
-    .toString()
-    .concat(styledComponentsSheet.getStyleTags());
+  const css = materialSheets.toString();
 
-  res.send(renderFullPage(html, css));
+  if (context.url) {
+    res.redirect(context.url);
+  } else {
+    res.send(renderFullPage(html, css));
+  }
 }
 
 function renderFullPage(html, css) {
   return `
-    <!doctype html>
+    <!DOCTYPE html>
     <html>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"></meta>
@@ -67,10 +76,10 @@ function renderFullPage(html, css) {
       <body>
         ${html}
         <style id="jss-server-side">${css}</style>
-        <script src="/dist/bundle.js"></script>
+        <script src="/bundle.js"></script>
       </body>
     </html>
     `;
 }
 
-app.listen(port);
+// app.listen(port);
