@@ -8,10 +8,10 @@ export default class App extends Component {
     return (
       <div>
         <Header />
-        <div style={{ marginTop: '60px' }}>
+        <div>
           <Switch>
             <Route path="/stories/:type" component={Stories} />
-            <Redirect from="/" to="stories/top" />
+            <Redirect from="/" to="stories/news" />
           </Switch>
         </div>
       </div>
