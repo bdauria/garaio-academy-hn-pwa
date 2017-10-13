@@ -4,43 +4,58 @@ import { Link } from 'react-router-dom';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import { Tabs, Tab } from 'material-ui/Tabs';
-import styled from 'styled-components';
 import Typography from 'material-ui/Typography';
+import withStyles from 'material-ui/styles/withStyles';
 
-const StoryLink = styled.div`
-  cursor: pointer;
-  margin-left: 30px;
-  height: 25px;
-  border-bottom: ${props => (props.selected ? '2px solid white' : 0)};
-`;
+import classNames from 'classnames';
 
-const LinkText = styled(Link)`
-  text-decoration: none;
-  color: #fff;
-`;
+const styles = {
+  storyLink: {
+    cursor: 'pointer',
+    marginLeft: '20px',
+    height: '25px',
+    borderBottom: '2px solid transparent'
+  },
+  storyLinkSelected: {
+    borderBottom: '2px solid white'
+  },
+  linkText: {
+    textDecoration: 'none',
+    color: '#fff'
+  }
+};
 
-const storyTypes = ['top', 'new', 'show', 'ask', 'job'];
+const storyTypes = ['news', 'newest', 'show', 'ask', 'jobs'];
 
 class Header extends Component {
   constructor(props) {
     super(props);
-    this.state = { selectedType: 'top' };
+    this.state = { selectedType: 'news' };
   }
+
   render() {
+    const { classes } = this.props;
     return (
       <AppBar title="Title">
         <Toolbar>
           <Typography type="body1">GARAIO-HN</Typography>
           {storyTypes.map(type => (
             <Typography type="body2">
-              <StoryLink selected={this.state.selectedType === type}>
-                <LinkText
+              <div
+                selected={this.state.selectedType === type}
+                className={classNames({
+                  [classes.storyLink]: true,
+                  [classes.storyLinkSelected]: this.state.selectedType === type
+                })}
+              >
+                <Link
+                  className={classes.linkText}
                   onClick={() => this.setState({ selectedType: type })}
                   to={`/stories/${type}`}
                 >
                   {type}
-                </LinkText>
-              </StoryLink>
+                </Link>
+              </div>
             </Typography>
           ))}
         </Toolbar>
@@ -49,4 +64,6 @@ class Header extends Component {
   }
 }
 
-export default withRouter(Header);
+const styled = withStyles(styles)(Header);
+
+export default withRouter(styled);
