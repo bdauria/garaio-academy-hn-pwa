@@ -1,101 +1,105 @@
 import { h, Component } from 'preact';
-import styled from 'styled-components';
 import { connect } from 'preact-redux';
 import { fetchStories } from './hacker-news-api';
 import { loadStories } from './stories-reducer';
 import Story from './story';
 import { CircularProgress } from 'material-ui/Progress';
 import { LinearProgress } from 'material-ui/Progress';
+import withStyles from 'material-ui/styles/withStyles';
 
-const Container = styled.div`
-  height: 100%;
-  padding: 8px 0;
-`;
-
-const storiesPerPage = 30;
-
-const Pagination = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 40px;
-  margin-top: 10px;
-  font-size: 17px;
-`;
-
-const StoriesProgress = styled(LinearProgress)`margin: 20px 20px 20px 20px;`;
-
-const NavButton = styled.button`margin: 10px;`;
+const styles = {
+  container: {
+    marginTop: '75px'
+  },
+  pagination: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: '10px',
+    fontSize: '17px'
+  },
+  progress: {
+    marginTop: '20px'
+  }
+};
 
 class Stories extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { page: 1 };
+  }
+
   componentDidMount() {
-    this.props.fetchStories(this.props.match.params.type);
-    this.setState({ page: 1 });
+    this.props.fetchStories(this.props.match.params.type, this.state.page);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.location.pathname === this.props.location.pathname) {
       return;
     }
-    this.props.fetchStories(nextProps.match.params.type);
     this.setState({ page: 1 });
-  }
-
-  pageSliceStart() {
-    return (this.state.page - 1) * storiesPerPage;
-  }
-
-  pageSliceEnd() {
-    return this.state.page * storiesPerPage;
+    this.props.fetchStories(nextProps.match.params.type, this.state.page);
   }
 
   nextPage() {
     this.setState({ page: this.state.page + 1 });
+    this.props.fetchStories(this.props.match.params.type, this.state.page);
   }
 
   previousPage() {
     this.setState({ page: this.state.page - 1 });
+    this.props.fetchStories(this.props.match.params.type, this.state.page);
+  }
+
+  stories() {
+    return Object.keys(this.props.stories).length === 0 ||
+      !this.props.stories[this.state.page]
+      ? []
+      : this.props.stories[this.state.page];
+  }
+
+  content() {
+    const { classes, stories } = this.props;
+    if (this.stories().length === 0) {
+      return <LinearProgress className={classes.progress} />;
+    }
+    return (
+      <div>
+        <ol>
+          {this.stories().map(story => <Story story={story} id={story.id} />)}
+        </ol>
+        <div className={classes.pagination}>
+          {this.state.page > 1 && (
+            <button onClick={() => this.previousPage()}>{'<'} Prev</button>
+          )}
+          <button onClick={() => this.nextPage()} stroked>
+            More {'>'}
+          </button>
+        </div>
+      </div>
+    );
   }
 
   render() {
-    return (
-      <Container>
-        {this.props.stories.length === 0 && <StoriesProgress />}
-        <ol>
-          {this.props.stories
-            .slice(this.pageSliceStart(), this.pageSliceEnd())
-            .map(id => <Story type={this.props.match.params.type} id={id} />)}
-        </ol>
-        <Pagination>
-          {this.state.page > 1 && (
-            <NavButton stroked onClick={() => this.previousPage()}>
-              {'<'} Prev
-            </NavButton>
-          )}
-          {this.pageSliceEnd() < this.props.stories.length &&
-            this.props.stories.length > 0 && (
-              <NavButton onClick={() => this.nextPage()} stroked>
-                More {'>'}
-              </NavButton>
-            )}
-        </Pagination>
-      </Container>
-    );
+    const { classes } = this.props;
+    return <div className={classes.container}>{this.content()}</div>;
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
   const typeStories = state.stories[ownProps.match.params.type];
   return {
-    stories: typeStories.ids
+    stories: typeStories.byPage
   };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  fetchStories: type =>
-    fetchStories(type).then(response => {
-      dispatch(loadStories(type, response.data));
+  fetchStories: (type, page) =>
+    fetchStories(type, page).then(response => {
+      dispatch(loadStories(type, page, response.data));
     })
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Stories);
+const styled = withStyles(styles)(Stories);
+
+export default connect(mapStateToProps, mapDispatchToProps)(styled);
