@@ -1,9 +1,9 @@
 export const LOAD_STORIES = 'LOAD_STORIES';
 export const LOAD_STORY = 'LOAD_STORY';
 
-export const loadStories = (type, ids) => ({
+export const loadStories = (type, page, items) => ({
   type: LOAD_STORIES,
-  payload: { type: type, ids: ids }
+  payload: { type: type, page: page, items: items }
 });
 
 export const loadStory = (type, id, item) => ({
@@ -11,12 +11,11 @@ export const loadStory = (type, id, item) => ({
   payload: { type: type, id: id, item: item }
 });
 
-export const initialState = ['top', 'new', 'show', 'ask', 'job'].reduce(
+export const initialState = ['news', 'newest', 'show', 'ask', 'jobs'].reduce(
   (state, type) => ({
     ...state,
     [type]: {
-      ids: [],
-      byId: {}
+      byPage: {}
     }
   }),
   {}
@@ -29,7 +28,10 @@ export const stories = (state = initialState, action) => {
         ...state,
         [action.payload.type]: {
           ...state[action.payload.type],
-          ids: action.payload.ids
+          byPage: {
+            ...state[action.payload.type].byPage,
+            [action.payload.page]: action.payload.items
+          }
         }
       };
     case LOAD_STORY:
