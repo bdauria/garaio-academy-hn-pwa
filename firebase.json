@@ -1,0 +1,24 @@
+{
+  "hosting": {
+    "headers": [
+      {
+        "source": "**/**",
+        "headers": [
+          {
+            "key": "Link",
+            "value":
+              "</init.bundle.js>;rel=preload;as=script,</0.bundle.js>;rel=preload;as=script,</1.bundle.js>;rel=preload;as=script,</2.bundle.js>;rel=preload;as=script,</3.bundle.js>;rel=preload;as=script,</4.bundle.js>;rel=preload;as=script,</5.bundle.js>;rel=preload;as=script,</6.bundle.js>;rel=preload;as=script,</7.bundle.js>;rel=preload;as=script,</8.bundle.js>;rel=preload;as=script,</9.bundle.js>;rel=preload;as=script,</10.bundle.js>;rel=preload;as=script,</11.bundle.js>;rel=preload;as=script,</12.bundle.js>;rel=preload;as=script,</13.bundle.js>;rel=preload;as=script,</14.bundle.js>;rel=preload;as=script"
+          }
+        ]
+      }
+    ],
+    "public": "dist",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {
+        "source": "**/**",
+        "function": "ssr/stories/news"
+      }
+    ]
+  }
+}
