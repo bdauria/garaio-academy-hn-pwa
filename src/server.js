@@ -76,7 +76,22 @@ function renderFullPage(html, css) {
       <body>
         ${html}
         <style id="jss-server-side">${css}</style>
-        <script src="/bundle.js"></script>
+        <script src="/init.bundle.js"></script>
+        <script src="/1.bundle.js"></script>
+        <script src="/0.bundle.js"></script>
+        <script src="/2.bundle.js"></script>
+        <script src="/11.bundle.js"></script>
+        <script src="/7.bundle.js"></script>
+        <script src="/6.bundle.js"></script>
+        <script src="/3.bundle.js"></script>
+        <script src="/10.bundle.js"></script>
+        <script src="/9.bundle.js"></script>
+        <script src="/8.bundle.js"></script>
+        <script src="/5.bundle.js"></script>
+        <script src="/14.bundle.js"></script>
+        <script src="/12.bundle.js"></script>
+        <script src="/13.bundle.js"></script>
+        <script src="/4.bundle.js"></script>
       </body>
     </html>
     `;

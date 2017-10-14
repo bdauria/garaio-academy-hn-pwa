@@ -1,13 +1,13 @@
 import { h, Component, render } from 'preact';
-import Header from './header';
-import Stories from './stories';
-import { Provider } from 'preact-redux';
+import Provider from 'preact-redux';
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import { stories } from './stories-reducer';
-import { BrowserRouter } from 'react-router-dom';
+import BrowserRouter from 'react-router-dom/BrowserRouter';
 import Main from './main';
-import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
-import { green, red } from 'material-ui/colors';
+import createMuiTheme from 'material-ui/styles/createMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import green from 'material-ui/colors/green';
+import red from 'material-ui/colors/red';
 
 const rootReducer = combineReducers({
   stories

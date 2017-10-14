@@ -14,7 +14,8 @@ module.exports = [
     output: {
       path: path.join(__dirname, 'dist'),
       publicPath: '/',
-      filename: 'bundle.js'
+      filename: '[name].bundle.js',
+      chunkFilename: '[name].bundle.js'
     },
     module: {
       rules: [
@@ -37,6 +38,14 @@ module.exports = [
       }
     },
     plugins: [
+      new webpack.optimize.CommonsChunkPlugin({
+        name: 'init',
+        minChunks: Infinity
+      }),
+      new webpack.optimize.AggressiveSplittingPlugin({
+        minSize: 30000,
+        maxSize: 50000
+      }),
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(
           process.env.NODE_ENV || 'development'
