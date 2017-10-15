@@ -1,8 +1,8 @@
 import { h, Component, render } from 'preact';
-import Provider from 'preact-redux';
+import { Provider } from 'preact-redux';
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import { stories } from './stories-reducer';
-import BrowserRouter from 'react-router-dom/BrowserRouter';
+import { BrowserRouter } from 'react-router-dom';
 import Main from './main';
 import createMuiTheme from 'material-ui/styles/createMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
