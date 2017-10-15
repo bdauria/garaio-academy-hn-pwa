@@ -6,6 +6,7 @@ const MinifyPlugin = require('babel-minify-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin;
 const webpack = require('webpack');
+var WorkboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = [
   {
@@ -43,15 +44,22 @@ module.exports = [
         )
       }),
       new MinifyPlugin(),
-      new HtmlWebpackPlugin({
-        inject: false,
-        template: require('html-webpack-template'),
-        meta: [
-          {
-            name: 'viewport',
-            content: 'width=device-width, initial-scale=1.0, user-scalable=no'
-          }
-        ]
+      // new HtmlWebpackPlugin({
+      //   inject: false,
+      //   template: require('html-webpack-template'),
+      //   meta: [
+      //     {
+      //       name: 'viewport',
+      //       content: 'width=device-width, initial-scale=1.0, user-scalable=no'
+      //     }
+      //   ]
+      // }),
+      new WorkboxPlugin({
+        globDirectory: 'dist',
+        globPatterns: ['**/*.{html,js,css}'],
+        globIgnores: ['**/service-worker.js'],
+        swSrc: path.join('src', 'service-worker.js'),
+        swDest: path.join('dist', 'service-worker.js')
       })
     ],
     devServer: {

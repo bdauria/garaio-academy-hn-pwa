@@ -57,7 +57,6 @@ function handleRender(req, res) {
   );
 
   const css = materialSheets.toString();
-
   if (context.url) {
     res.redirect(context.url);
   } else {
@@ -75,6 +74,11 @@ function renderFullPage(html, css) {
       </head>
       <body>
         ${html}
+        <script>
+          if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js');
+          }
+        </script>
         <style id="jss-server-side">${css}</style>
         <script src="/bundle.js"></script>
       </body>
