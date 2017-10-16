@@ -5,7 +5,7 @@ const workboxSW = new WorkboxSW({ clientsClaim: true });
 workboxSW.precache([]);
 
 workboxSW.router.setDefaultHandler({
-  handler: workboxSW.strategies.staleWhileRevalidate()
+  handler: workboxSW.strategies.cacheFirst()
 });
 
 workboxSW.router.registerRoute(
