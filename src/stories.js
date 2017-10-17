@@ -6,6 +6,8 @@ import Story from './story';
 import { CircularProgress } from 'material-ui/Progress';
 import { LinearProgress } from 'material-ui/Progress';
 import withStyles from 'material-ui/styles/withStyles';
+import SignalWifiOff from 'mdi-material-ui/SignalOff';
+import Typography from 'material-ui/Typography';
 
 const styles = {
   container: {
@@ -20,6 +22,18 @@ const styles = {
   },
   progress: {
     marginTop: '20px'
+  },
+  offlinePanel: {
+    marginTop: '200px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    height: '100%'
+  },
+  offlineIcon: {
+    height: 200,
+    width: 200,
+    color: '#c8e6c9'
   }
 };
 
@@ -60,6 +74,19 @@ class Stories extends Component {
 
   content() {
     const { classes, stories } = this.props;
+    if (!navigator.onLine && this.stories().count === 0) {
+      return (
+        <div className={classes.offlinePanel}>
+          <SignalWifiOff className={classes.offlineIcon}>
+            signal_wifi_off
+          </SignalWifiOff>
+
+          <Typography type="subheading" color="primary">
+            You are currently offline, can't load new stories
+          </Typography>
+        </div>
+      );
+    }
     if (this.stories().length === 0) {
       return <LinearProgress className={classes.progress} />;
     }
