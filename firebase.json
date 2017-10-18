@@ -1,16 +1,5 @@
 {
   "hosting": {
-    "headers": [
-      {
-        "source": "**/**",
-        "headers": [
-          {
-            "key": "Link",
-            "value": "</bundle.js>;rel=preload;as=script"
-          }
-        ]
-      }
-    ],
     "public": "dist",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
