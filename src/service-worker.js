@@ -4,9 +4,12 @@ const workboxSW = new WorkboxSW({ clientsClaim: true });
 
 workboxSW.precache([]);
 
-workboxSW.router.setDefaultHandler({
-  handler: workboxSW.strategies.cacheFirst()
-});
+workboxSW.router.registerRoute('/', workboxSW.strategies.cacheFirst());
+
+workboxSW.router.registerRoute(
+  '/stories/(.*)',
+  workboxSW.strategies.cacheFirst()
+);
 
 workboxSW.router.registerRoute(
   'https://node-hnapi.herokuapp.com/(.*)',
