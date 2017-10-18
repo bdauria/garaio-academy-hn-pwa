@@ -2,6 +2,7 @@ import { h, Component } from 'preact';
 import { connect } from 'preact-redux';
 import { fetchStories } from './hacker-news-api';
 import { loadStories } from './stories-reducer';
+import { flushStories } from './stories-reducer';
 import Story from './story';
 import { CircularProgress } from 'material-ui/Progress';
 import { LinearProgress } from 'material-ui/Progress';
@@ -74,7 +75,11 @@ class Stories extends Component {
 
   content() {
     const { classes, stories } = this.props;
-    if (!navigator.onLine && this.stories().count === 0) {
+    if (
+      typeof window !== 'undefined' &&
+      !navigator.onLine &&
+      this.stories().length === 0
+    ) {
       return (
         <div className={classes.offlinePanel}>
           <SignalWifiOff className={classes.offlineIcon}>
@@ -122,9 +127,13 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   fetchStories: (type, page) =>
-    fetchStories(type, page).then(response => {
-      dispatch(loadStories(type, page, response.data));
-    })
+    fetchStories(type, page)
+      .then(response => {
+        dispatch(loadStories(type, page, response.data));
+      })
+      .catch(() => {
+        dispatch(flushStories(type));
+      })
 });
 
 const styled = withStyles(styles)(Stories);
