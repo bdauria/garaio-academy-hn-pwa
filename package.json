@@ -28,6 +28,7 @@
     "babel-preset-preact": "^1.1.0",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
+    "brotli-webpack-plugin": "^0.4.1",
     "compression": "^1.7.1",
     "copy-webpack-plugin": "^4.1.1",
     "css-loader": "^0.28.7",

@@ -15,7 +15,8 @@ module.exports = [
     output: {
       path: path.join(__dirname, 'dist'),
       publicPath: '/',
-      filename: 'bundle.js'
+      filename: '[name].js',
+      chunkFilename: '[name].js'
     },
     module: {
       rules: [
@@ -54,6 +55,14 @@ module.exports = [
       //     }
       //   ]
       // }),
+      new webpack.optimize.AggressiveSplittingPlugin({
+        minSize: 90000,
+        maxSize: 170000
+      }),
+      new webpack.optimize.CommonsChunkPlugin({
+        name: 'init',
+        minChunks: Infinity
+      }),
       new WorkboxPlugin({
         globDirectory: 'dist',
         globPatterns: ['**/*.{html,js,css}'],
@@ -62,6 +71,7 @@ module.exports = [
         swDest: path.join('dist', 'service-worker.js')
       })
     ],
+    recordsOutputPath: path.join(__dirname, 'dist', 'records.json'),
     devServer: {
       contentBase: path.join(__dirname, 'dist'),
       compress: true,

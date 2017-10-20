@@ -74,13 +74,18 @@ function renderFullPage(html, css) {
       </head>
       <body>
         ${html}
+        <style id="jss-server-side">${css}</style>
+        <script src="/init.js"></script>
+        <script src="/0.js"></script>
+        <script src="/1.js"></script>
+        <script src="/3.js"></script>
+        <script src="/4.js"></script>
+        <script src="/2.js"></script>
         <script>
           if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/service-worker.js');
           }
         </script>
-        <style id="jss-server-side">${css}</style>
-        <script src="/bundle.js"></script>
       </body>
     </html>
     `;
