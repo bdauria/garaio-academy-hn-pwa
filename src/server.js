@@ -78,8 +78,6 @@ function renderFullPage(html, css) {
         <script src="/init.js"></script>
         <script src="/0.js"></script>
         <script src="/1.js"></script>
-        <script src="/3.js"></script>
-        <script src="/4.js"></script>
         <script src="/2.js"></script>
         <script>
           if ('serviceWorker' in navigator) {

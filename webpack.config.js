@@ -56,8 +56,8 @@ module.exports = [
       //   ]
       // }),
       new webpack.optimize.AggressiveSplittingPlugin({
-        minSize: 90000,
-        maxSize: 170000
+        minSize: 200000,
+        maxSize: 300000
       }),
       new webpack.optimize.CommonsChunkPlugin({
         name: 'init',
