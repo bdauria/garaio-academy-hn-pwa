@@ -6,7 +6,8 @@ const MinifyPlugin = require('babel-minify-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin;
 const webpack = require('webpack');
-var WorkboxPlugin = require('workbox-webpack-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
+const PwaManifestPlugin = require('webpack-pwa-manifest');
 
 module.exports = [
   {
@@ -69,6 +70,23 @@ module.exports = [
         globIgnores: ['**/service-worker.js'],
         swSrc: path.join('src', 'service-worker.js'),
         swDest: path.join('dist', 'service-worker.js')
+      }),
+      new PwaManifestPlugin({
+        filename: 'manifest.json',
+        fingerprints: false,
+        inject: false,
+        theme_color: '#4CAF50',
+        name: 'GARAIO Hacker News Client',
+        short_name: 'GARAIO-HN',
+        description:
+          'An experimental implementation of the Hacker News Client for the Academy 2017',
+        background_color: '#ffffff',
+        icons: [
+          {
+            src: path.resolve('src/GHN.png'),
+            sizes: [96, 128, 192, 256, 512]
+          }
+        ]
       })
     ],
     recordsOutputPath: path.join(__dirname, 'dist', 'records.json'),
