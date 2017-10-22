@@ -19,10 +19,6 @@ import { stories } from './stories-reducer';
 import compression from 'compression';
 
 export const app = Express();
-// const port = 3000;
-
-// app.use(compression());
-// app.use('/dist', Express.static('dist'));
 app.use(handleRender);
 
 function handleRender(req, res) {
@@ -81,5 +77,3 @@ function renderFullPage(html, css) {
     </html>
     `;
 }
-
-// app.listen(port);
