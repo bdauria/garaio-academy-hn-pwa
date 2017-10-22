@@ -41,7 +41,7 @@ const styles = {
 class Stories extends Component {
   constructor(props) {
     super(props);
-    this.state = { page: 1 };
+    this.state = { page: 1, hasStories: true };
   }
 
   componentDidMount() {
@@ -49,7 +49,12 @@ class Stories extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.location.pathname === this.props.location.pathname) {
+    const sameTab =
+      nextProps.location.pathname === this.props.location.pathname;
+    if (!sameTab) {
+      this.setState({ hasStories: true });
+    } else {
+      this.setState({ hasStories: nextProps.stories[1].length > 0 });
       return;
     }
     this.setState({ page: 1 });
@@ -80,17 +85,13 @@ class Stories extends Component {
     return Object.keys(this.props.stories).length > 0;
   }
 
-  hasStories() {
-    return this.storiesLoaded() && this.currentPageStories().length > 0;
-  }
-
   offline() {
     return typeof window !== 'undefined' && !navigator.onLine;
   }
 
   content() {
     const { classes, stories } = this.props;
-    if (!this.hasStories() && this.offline()) {
+    if (!this.state.hasStories && this.offline()) {
       return (
         <div className={classes.offlinePanel}>
           <SignalWifiOff className={classes.offlineIcon}>
