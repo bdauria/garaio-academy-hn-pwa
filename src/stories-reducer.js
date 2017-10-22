@@ -16,7 +16,7 @@ export const initialState = ['news', 'newest', 'show', 'ask', 'jobs'].reduce(
   (state, type) => ({
     ...state,
     [type]: {
-      byPage: {}
+      byPage: { [1]: [] }
     }
   }),
   {}
@@ -40,7 +40,7 @@ export const stories = (state = initialState, action) => {
         ...state,
         [action.payload.type]: {
           ...state[action.payload.type],
-          byPage: {}
+          byPage: { [1]: [] }
         }
       };
     default:
