@@ -44,16 +44,6 @@ module.exports = [
         )
       }),
       new MinifyPlugin(),
-      // new HtmlWebpackPlugin({
-      //   inject: false,
-      //   template: require('html-webpack-template'),
-      //   meta: [
-      //     {
-      //       name: 'viewport',
-      //       content: 'width=device-width, initial-scale=1.0, user-scalable=no'
-      //     }
-      //   ]
-      // }),
       new WorkboxPlugin({
         globDirectory: 'dist',
         globPatterns: ['**/*.{html,js,css}'],
