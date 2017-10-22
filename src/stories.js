@@ -67,19 +67,30 @@ class Stories extends Component {
   }
 
   stories() {
-    return Object.keys(this.props.stories).length === 0 ||
-      !this.props.stories[this.state.page]
+    return !this.storiesLoaded() || !this.currentPageStories()
       ? []
-      : this.props.stories[this.state.page];
+      : this.currentPageStories();
+  }
+
+  currentPageStories() {
+    return this.props.stories[this.state.page];
+  }
+
+  storiesLoaded() {
+    return Object.keys(this.props.stories).length > 0;
+  }
+
+  hasStories() {
+    return this.storiesLoaded() && this.currentPageStories().length > 0;
+  }
+
+  offline() {
+    return typeof window !== 'undefined' && !navigator.onLine;
   }
 
   content() {
     const { classes, stories } = this.props;
-    if (
-      typeof window !== 'undefined' &&
-      !navigator.onLine &&
-      this.stories().length === 0
-    ) {
+    if (!this.hasStories() && this.offline()) {
       return (
         <div className={classes.offlinePanel}>
           <SignalWifiOff className={classes.offlineIcon}>
