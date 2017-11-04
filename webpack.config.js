@@ -6,6 +6,8 @@ const MinifyPlugin = require('babel-minify-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin;
 const webpack = require('webpack');
+const WorkboxPlugin = require('workbox-webpack-plugin');
+const PwaManifestPlugin = require('webpack-pwa-manifest');
 
 module.exports = [
   {
@@ -14,7 +16,8 @@ module.exports = [
     output: {
       path: path.join(__dirname, 'dist'),
       publicPath: '/',
-      filename: 'bundle.js'
+      filename: '[name].js',
+      chunkFilename: '[name].js'
     },
     module: {
       rules: [
@@ -43,17 +46,40 @@ module.exports = [
         )
       }),
       new MinifyPlugin(),
-      new HtmlWebpackPlugin({
+      new webpack.optimize.AggressiveSplittingPlugin({
+        minSize: 200000,
+        maxSize: 300000
+      }),
+      new webpack.optimize.CommonsChunkPlugin({
+        name: 'init',
+        minChunks: Infinity
+      }),
+      new WorkboxPlugin({
+        globDirectory: 'dist',
+        globPatterns: ['**/*.{html,js,css}'],
+        globIgnores: ['**/service-worker.js'],
+        swSrc: path.join('src', 'service-worker.js'),
+        swDest: path.join('dist', 'service-worker.js')
+      }),
+      new PwaManifestPlugin({
+        filename: 'manifest.json',
+        fingerprints: false,
         inject: false,
-        template: require('html-webpack-template'),
-        meta: [
+        theme_color: '#4CAF50',
+        name: 'GARAIO Hacker News Client',
+        short_name: 'GARAIO-HN',
+        description:
+          'An experimental implementation of the Hacker News Client for the Academy 2017',
+        background_color: '#ffffff',
+        icons: [
           {
-            name: 'viewport',
-            content: 'width=device-width, initial-scale=1.0, user-scalable=no'
+            src: path.resolve('src/GHN.png'),
+            sizes: [96, 128, 192, 256, 512]
           }
         ]
       })
     ],
+    recordsOutputPath: path.join(__dirname, 'dist', 'records.json'),
     devServer: {
       contentBase: path.join(__dirname, 'dist'),
       compress: true,

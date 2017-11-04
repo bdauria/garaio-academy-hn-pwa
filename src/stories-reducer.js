@@ -1,21 +1,22 @@
 export const LOAD_STORIES = 'LOAD_STORIES';
 export const LOAD_STORY = 'LOAD_STORY';
+export const FLUSH_STORIES = 'FLUSH_STORIES';
 
 export const loadStories = (type, page, items) => ({
   type: LOAD_STORIES,
   payload: { type: type, page: page, items: items }
 });
 
-export const loadStory = (type, id, item) => ({
-  type: LOAD_STORY,
-  payload: { type: type, id: id, item: item }
+export const flushStories = type => ({
+  type: FLUSH_STORIES,
+  payload: { type: type }
 });
 
 export const initialState = ['news', 'newest', 'show', 'ask', 'jobs'].reduce(
   (state, type) => ({
     ...state,
     [type]: {
-      byPage: {}
+      byPage: { [1]: [] }
     }
   }),
   {}
@@ -34,15 +35,12 @@ export const stories = (state = initialState, action) => {
           }
         }
       };
-    case LOAD_STORY:
+    case FLUSH_STORIES:
       return {
         ...state,
         [action.payload.type]: {
           ...state[action.payload.type],
-          byId: {
-            ...state[action.payload.type].byId,
-            [action.payload.id]: action.payload.item
-          }
+          byPage: { [1]: [] }
         }
       };
     default:

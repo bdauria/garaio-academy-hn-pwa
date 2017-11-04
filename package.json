@@ -5,17 +5,12 @@
   "main": "index.js",
   "scripts": {
     "build": "NODE_ENV='production' node_modules/.bin/webpack",
-    "build-server":
-      "npm run build && node_modules/.bin/babel ./src/server.js -d functions",
-    "start-dev-server":
-      "node_modules/.bin/webpack && node_modules/.bin/babel-node ./src/server.js",
-    "start-dev-client":
-      "node_modules/.bin/webpack && node_modules/.bin/webpack-dev-server",
+    "build-server": "npm run build && node_modules/.bin/babel ./src/server.js -d functions",
+    "start-dev-server": "node_modules/.bin/webpack && node_modules/.bin/babel-node ./src/server.js",
+    "start-dev-client": "node_modules/.bin/webpack && node_modules/.bin/webpack-dev-server",
     "deploy": "npm run build && firebase deploy",
-    "deploy-csr":
-      "npm run build && cp firebase-csr.json firebase.json && firebase deploy --only hosting && rm firebase.json",
-    "deploy-ssr":
-      "npm run build && cp firebase-ssr.json firebase.json && firebase deploy && rm firebase.json"
+    "deploy-csr": "npm run build && cp firebase-csr.json firebase.json && firebase deploy --only hosting && rm firebase.json",
+    "deploy-ssr": "npm run build && cp firebase-ssr.json firebase.json && firebase deploy && rm firebase.json"
   },
   "author": "",
   "license": "ISC",
@@ -33,6 +28,7 @@
     "babel-preset-preact": "^1.1.0",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
+    "brotli-webpack-plugin": "^0.4.1",
     "compression": "^1.7.1",
     "copy-webpack-plugin": "^4.1.1",
     "css-loader": "^0.28.7",
@@ -50,13 +46,19 @@
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.9.1",
-    "webpack-node-externals": "^1.6.0"
+    "webpack-node-externals": "^1.6.0",
+    "webpack-pwa-manifest": "^3.3.2",
+    "workbox-webpack-plugin": "^2.1.0"
   },
   "dependencies": {
     "axios": "^0.16.2",
     "classnames": "^2.2.5",
     "express": "^4.16.2",
+    "firebase": "^4.5.1",
+    "firebase-admin": "^5.4.2",
+    "firebase-functions": "^0.7.1",
     "material-ui": "^1.0.0-beta.13",
+    "mdi-material-ui": "^2.0.1",
     "preact-redux": "^2.0.3",
     "preact-render-to-string": "^3.6.3",
     "react-jss": "^7.2.0",

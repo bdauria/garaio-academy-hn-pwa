@@ -19,10 +19,6 @@ import { stories } from './stories-reducer';
 import compression from 'compression';
 
 export const app = Express();
-// const port = 3000;
-
-// app.use(compression());
-// app.use('/dist', Express.static('dist'));
 app.use(handleRender);
 
 function handleRender(req, res) {
@@ -57,7 +53,6 @@ function handleRender(req, res) {
   );
 
   const css = materialSheets.toString();
-
   if (context.url) {
     res.redirect(context.url);
   } else {
@@ -71,15 +66,23 @@ function renderFullPage(html, css) {
     <html>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"></meta>
+        <meta name="theme-color" content="#4CAF50">
+        <link rel="manifest" href="/manifest.json">
         <title>GARAIO HN</title>
       </head>
       <body>
         ${html}
         <style id="jss-server-side">${css}</style>
-        <script src="/bundle.js"></script>
+        <script src="/init.js"></script>
+        <script src="/0.js"></script>
+        <script src="/1.js"></script>
+        <script src="/2.js"></script>
+        <script>
+          if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js');
+          }
+        </script>
       </body>
     </html>
     `;
 }
-
-// app.listen(port);

@@ -1,0 +1,24 @@
+{
+  "hosting": {
+    "headers": [
+      {
+        "source": "**/**",
+        "headers": [
+          {
+            "key": "Link",
+            "value":
+              "</init.js>;rel=preload;as=script,</0.js>;rel=preload;as=script,</1.js>;rel=preload;as=script,</2.js>;rel=preload;as=script"
+          }
+        ]
+      }
+    ],
+    "public": "dist",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {
+        "source": "**/**",
+        "function": "ssr/stories/news"
+      }
+    ]
+  }
+}
